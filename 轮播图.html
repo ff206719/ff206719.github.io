@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基本模板</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        img {
+            display: block;
+        }
+
+        .my-swiper {
+            width: 500px;
+            margin: 50px auto;
+            /* border: 20px solid #000;  */
+            /* 相对定位 */
+            position: relative;
+        }
+
+        .my-swiper-photo {
+            /* 500 */
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .my-swiper-photo ul {
+            /* 5000 */
+            width: 1000%;
+        }
+
+        .my-swiper-photo ul::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .my-swiper-photo ul li {
+            /* 500 */
+            width: 10%;
+            float: left;
+        }
+
+        .my-swiper-photo ul li a {
+            display: block;
+        }
+
+        .my-swiper-photo ul li a img {
+            width: 100%;
+            height: 260px;
+        }
+
+        .my-swiper .btn {
+            position: absolute;
+            top: 50%;
+            z-index: 1000;
+            margin-top: -30px;
+            width: 25px;
+            height: 50px;
+            background-color: rgba(134, 226, 238, 0.55);
+            border: 0;
+            cursor: pointer;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius:20px;
+          
+        }
+
+        .my-swiper .left {
+            left: 0;
+        }
+
+        .my-swiper .right {
+            right: 0;
+            transform: rotate(180deg)
+        }
+
+        .my-swiper ol {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .my-swiper ol li {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            margin: 0 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .my-swiper ol li.active {
+            background-color: rgb(240, 76, 136);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="my-swiper">
+        <!-- 图片 -->
+        <div class="my-swiper-photo">
+            <ul>
+                <li><a href="#"><img src="./imag/1.jpg" alt="a"></a></li>
+                <!-- <li><a href="#"><img src="../imag/2.png" alt="b"></a></li> -->
+                <li><a href="#"><img src="./imag/3.png" alt="c"></a></li>
+                <!-- <li><a href="#"><img src="../imag/4.png" alt="d"></a></li> -->
+                <li><a href="#"><img src="./imag/5.png" alt="e"></a></li>
+                <li><a href="#"><img src="./imag/6.png" alt="f"></a></li>
+                <!-- <li><a href="#"><img src="../imag/7.png" alt="g"></a></li> -->
+                <!-- 追加多一张图 -->
+                <li><a href="#"><img src="./imag/1.jpg" alt="a"></a></li>
+            </ul>
+        </div>
+        <!-- 左右按钮 -->
+        <button class="btn left"><i></i></button>
+        <button class="btn right"><i></i></button>
+
+        <!-- 指示点（导航点） -->
+        <ol class="points">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+           
+        </ol>
+    </div>
+
+    <script src="./animate.js"></script>
+    <script>
+
+        var myswiper = document.querySelector('.my-swiper');
+        var mymyswiperphoto = document.querySelector('.my-swiper-photo');
+        var ulEl = document.querySelector('.my-swiper-photo ul');
+        var leftBtn = document.querySelector('.left');
+        var rightBtn = document.querySelector('.right');
+        var points = document.querySelectorAll('.points li');
+
+
+
+        var width = parseFloat(getComputedStyle(mymyswiperphoto)['width']);
+        var index = 0;
+        var key = 0;
+        var timer = null;
+
+
+        var setPoint = function (key) {
+            for (var i = 0; i < points.length; i++) {
+                points[i].className = '';
+            }
+            points[key].className = 'active';
+        }
+        // setPoint(2);
+        // console.log(ulEl.children.length - 1);
+        var autoLeftPlay = function () {
+            index++;
+            if (index >= ulEl.children.length - 1) {
+                ulEl.style['marginLeft'] = "0px";
+                index = 1;
+            }
+            animate(ulEl, { marginLeft: -index * width });
+
+            key++;
+            key = key > (points.length - 1) ? 0 : key;
+            setPoint(key);
+        }
+        var autoRightPlay = function () {
+            index--;
+            if (index < 0) {
+                ulEl.style['marginLeft'] = "-3000px";
+                index = 2;
+            }
+            animate(ulEl, { marginLeft: -index * width });
+
+            key--;
+            key = key < 0 ? (points.length - 1) : key;
+            setPoint(key);
+        }
+        // autoLeftPlay();
+        timer = setInterval(autoLeftPlay, 2000);
+
+        myswiper.onmouseover = function () {
+            clearInterval(timer);
+        }
+        myswiper.onmouseleave = function () {
+            clearInterval(timer);
+            timer = setInterval(autoLeftPlay, 2000);
+            // autoLeftPlay();
+            // console.log("继续");
+        }
+
+        leftBtn.onclick = function () {
+            autoRightPlay();
+        }
+        rightBtn.onclick = function () {
+            autoLeftPlay();
+        }   
+
+        for(var i =0 ;i< points.length;i++){
+            points[i].xxx = i;
+            points[i].onmouseenter = function(){
+                index = this.xxx;
+                key = this.xxx;
+                animate(ulEl, { marginLeft: -index * width });
+                setPoint(key);
+            }
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            // console.log(document.hidden);// true 表示这个页面隐藏/最小化
+            if (document.hidden) {
+                 // 隐藏
+                 //  console.log('轮播图界面不可见');
+                 clearInterval(timer);
+
+            } else {
+                 // 显示
+                 //  console.log('轮播图界面可见');
+                 clearInterval(timer);
+                 timer = setInterval(autoLeftPlay, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

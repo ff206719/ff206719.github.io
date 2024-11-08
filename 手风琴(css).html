@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基本模板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: beige;
+            /* height: 100vh; */
+
+        }
+
+        img {
+            width: 262px;
+            height: 400px;
+        }
+
+        .war {
+            display: flex;
+            width: 98%;
+            height: 400px;
+        }
+
+        .war .imgas {
+            flex: 1;
+            overflow: hidden;
+            transition: .5s;
+            margin: 0 5px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, .5);
+            border-radius: 20px;
+        }
+        .imgas>img {
+            width: 100%;
+            height: 100%;
+            transition:.5s;
+            /*  防止图片过大导致卡顿 */
+            object-fit: cover;
+        }
+        .imgas:hover {
+            /*  弹性为40%*/
+            flex-basis: 40%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="war">
+        <div class="imgas">
+            <img src="./en1.jpg" alt="">
+        </div>
+        <div class="imgas">
+            <img src="./ds.jpeg" alt="">
+        </div>
+        <div class="imgas">
+            <img src="./kas.jpg" alt="">
+        </div>
+        <div class="imgas">
+            <img src="./sa.jpg" alt="">
+        </div>
+        <div class="imgas">
+            <img src="./yas.jpg" alt="">
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+
+
+    </script>
+</body>
+
+</html>
